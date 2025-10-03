@@ -5,9 +5,11 @@ import {
   Users, 
   CreditCard, 
   Package, 
-  Cloud,
-  ArrowRight
+  Cloud
 } from "lucide-react";
+// We'll use the hotel.png and payroll.png as our split images
+import hotelImage from "@/assets/hotel.png";
+import payrollImage from "@/assets/payroll.png";
 
 const WhatWeDoSection = () => {
   const features = [
@@ -15,36 +17,47 @@ const WhatWeDoSection = () => {
       icon: ShoppingCart,
       title: "Smart Sales Processing",
       description: "Lightning-fast checkout with AI-powered product recognition and dynamic pricing.",
+      delay: 0.1
     },
     {
       icon: BarChart3,
       title: "Advanced Analytics",
       description: "Real-time insights and predictive analytics to optimize your business performance.",
+      delay: 0.2
     },
     {
       icon: Users,
       title: "Customer Management",
       description: "Build lasting relationships with comprehensive customer profiles and loyalty programs.",
+      delay: 0.3
     },
     {
       icon: CreditCard,
       title: "Seamless Payments",
       description: "Accept all payment methods with secure, PCI-compliant transaction processing.",
+      delay: 0.4
     },
     {
       icon: Package,
       title: "Inventory Control",
       description: "Automated inventory tracking with low-stock alerts and purchase order generation.",
+      delay: 0.5
     },
     {
       icon: Cloud,
       title: "Cloud Integration",
       description: "Access your data anywhere with secure cloud sync and multi-location support.",
+      delay: 0.6
     },
   ];
 
   return (
-    <section id="features" className="py-20 relative">
+    <section id="features" className="py-20 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-primary/5"></div>
+      <div className="absolute top-1/3 -left-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
+      
       {/* Animated Divider */}
       <div className="absolute top-0 left-0 w-full h-px">
         <motion.div
@@ -56,9 +69,9 @@ const WhatWeDoSection = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -84,63 +97,143 @@ const WhatWeDoSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <motion.div
-                key={feature.title}
-                className="group"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
-                  ease: "easeOut",
-                }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="glass-card p-8 rounded-2xl h-full relative overflow-hidden group-hover:glow-accent transition-all duration-300">
-                  {/* Animated Background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Floating Icon */}
-                  <motion.div
-                    className="relative z-10 mb-6"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <div className="w-16 h-16 glass-card rounded-2xl flex items-center justify-center group-hover:glow-primary">
-                      <Icon className="w-8 h-8 text-accent group-hover:text-primary transition-colors duration-300" />
-                    </div>
-                  </motion.div>
-
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:gradient-text-primary transition-all duration-300">
-                      {feature.title}
-                    </h3>
-                    
-                    <p className="text-secondary leading-relaxed mb-6 group-hover:text-muted transition-colors duration-300">
-                      {feature.description}
-                    </p>
-
-                    {/* Learn More Link */}
-                    <motion.div
-                      className="flex items-center text-accent opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer"
-                      whileHover={{ x: 5 }}
-                    >
-                      <span className="text-sm font-medium mr-2">Learn More</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.div>
-                  </div>
-
-                  {/* Gradient Line */}
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+        {/* Split Layout Sections */}
+        <div className="space-y-32 max-w-7xl mx-auto">
+          {/* First Split Section - Image Left, Content Right */}
+          <motion.div 
+            className="flex flex-col md:flex-row items-center gap-12"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            {/* Image Side */}
+            <div className="md:w-1/2">
+              <div className="relative">
+                <div className="glass-card rounded-3xl p-6 border border-gray-700/30">
+                  <img 
+                    src={hotelImage} 
+                    alt="Hotel Management System" 
+                    className="w-full h-auto rounded-2xl object-cover"
+                  />
                 </div>
-              </motion.div>
-            );
-          })}
+                {/* Floating Elements */}
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full opacity-30"></div>
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-br from-accent to-primary rounded-full opacity-20"></div>
+              </div>
+            </div>
+            
+            {/* Content Side */}
+            <div className="md:w-1/2">
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-3xl font-bold mb-4 gradient-text-primary">
+                    Integrated Business Solutions
+                  </h3>
+                  <p className="text-secondary text-lg leading-relaxed">
+                    Our comprehensive POS system combines all essential business tools in one seamless platform, 
+                    eliminating the need for multiple disconnected applications.
+                  </p>
+                </div>
+                
+                <div className="space-y-6">
+                  {features.slice(0, 3).map((feature, index) => {
+                    const Icon = feature.icon;
+                    return (
+                      <motion.div 
+                        key={feature.title}
+                        className="flex items-start gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="mt-1 w-12 h-12 glass-card rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-700/30">
+                          <Icon className="w-6 h-6 text-accent" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-semibold mb-2 text-foreground">
+                            {feature.title}
+                          </h4>
+                          <p className="text-secondary">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Second Split Section - Content Left, Image Right */}
+          <motion.div 
+            className="flex flex-col md:flex-row-reverse items-center gap-12"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            {/* Image Side */}
+            <div className="md:w-1/2">
+              <div className="relative">
+                <div className="glass-card rounded-3xl p-6 border border-gray-700/30">
+                  <img 
+                    src={payrollImage} 
+                    alt="Payroll Management System" 
+                    className="w-full h-auto rounded-2xl object-cover"
+                  />
+                </div>
+                {/* Floating Elements */}
+                <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-full opacity-30"></div>
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full opacity-20"></div>
+              </div>
+            </div>
+            
+            {/* Content Side */}
+            <div className="md:w-1/2">
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-3xl font-bold mb-4 gradient-text-accent">
+                    Data-Driven Growth
+                  </h3>
+                  <p className="text-secondary text-lg leading-relaxed">
+                    Transform your business decisions with real-time analytics and intelligent insights 
+                    that help you understand customer behavior and optimize operations.
+                  </p>
+                </div>
+                
+                <div className="space-y-6">
+                  {features.slice(3, 6).map((feature, index) => {
+                    const Icon = feature.icon;
+                    return (
+                      <motion.div 
+                        key={feature.title}
+                        className="flex items-start gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="mt-1 w-12 h-12 glass-card rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-700/30">
+                          <Icon className="w-6 h-6 text-accent" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-semibold mb-2 text-foreground">
+                            {feature.title}
+                          </h4>
+                          <p className="text-secondary">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -6,14 +6,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,16 +34,40 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for your message. We'll get back to you soon.",
-        duration: 5000,
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
       });
-      setFormData({ name: "", email: "", message: "" });
+
+      if (response.ok) {
+        setShowSuccessModal(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        const errorData = await response.json();
+        toast({
+          title: "Error",
+          description: errorData.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error. Please check your connection and try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   const contactInfo = [
@@ -132,6 +165,21 @@ const ContactSection = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="Enter your email address"
+                    required
+                    className="glass-card border-card-border bg-transparent text-foreground placeholder:text-secondary focus:glow-accent"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="subject" className="text-foreground font-medium">
+                    Subject
+                  </Label>
+                  <Input
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="Enter subject"
                     required
                     className="glass-card border-card-border bg-transparent text-foreground placeholder:text-secondary focus:glow-accent"
                   />
@@ -236,6 +284,35 @@ const ContactSection = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md glass-card border-card-border">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center gradient-text-primary">
+              Message Sent Successfully!
+            </DialogTitle>
+            <DialogDescription className="text-center text-secondary mt-4">
+              Thank you for contacting us. Our team will get back to you as soon as possible.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center py-4">
+            <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4">
+              <CheckCircle className="w-8 h-8 text-green-500" />
+            </div>
+            <p className="text-center text-secondary mb-6">
+              We've received your message and will respond within 24 hours.
+            </p>
+            <Button 
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full"
+              variant="hero"
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

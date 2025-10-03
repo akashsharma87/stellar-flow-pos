@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,11 +17,13 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Features", href: "#features" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Blog", href: "#blog" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Reviews", href: "/reviews" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -40,31 +43,34 @@ const Navbar = () => {
           <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">P</span>
           </div>
-          <span className="text-xl font-bold gradient-text-primary">POS</span>
+          <Link to="/" className="text-xl font-bold gradient-text-primary">POS</Link>
         </motion.div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           {navItems.map((item, index) => (
-            <motion.a
+            <motion.div
               key={item.name}
-              href={item.href}
-              className="text-secondary hover:text-foreground transition-colors relative group"
               whileHover={{ y: -2 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              {item.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
-            </motion.a>
+              <Link
+                to={item.href}
+                className="text-secondary hover:text-foreground transition-colors relative group"
+              >
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            </motion.div>
           ))}
         </div>
 
         {/* CTA Button */}
         <div className="hidden md:block">
-          <Button variant="hero" size="lg">
-            Get Started
+          <Button variant="hero" size="lg" asChild>
+            <Link to="/contact">Get Started</Link>
           </Button>
         </div>
 
@@ -86,18 +92,18 @@ const Navbar = () => {
           className="md:hidden glass-card mt-2 mx-4 rounded-lg p-4"
         >
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className="block py-2 text-secondary hover:text-foreground transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {item.name}
-            </a>
+            </Link>
           ))}
           <div className="mt-4">
-            <Button variant="hero" className="w-full">
-              Get Started
+            <Button variant="hero" className="w-full" asChild>
+              <Link to="/contact">Get Started</Link>
             </Button>
           </div>
         </motion.div>

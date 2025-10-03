@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import heroBackground from "@/assets/hero-bg.jpg";
-import posMockup from "@/assets/pos-mockup.jpg";
+import posMockup from "@/assets/pos-mockup.png";
 
 const HeroSection = () => {
   return (
